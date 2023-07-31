@@ -34,6 +34,14 @@ def save():
     website = website_entry.get()
     email = email_entry.get()
     password = password_entry.get()
+    new_data = {
+        website: {
+            "email": email,
+            "password": password,
+        }
+    }
+
+
 
     is_ok = messagebox.askokcancel(title=website, message=f"These are the details entered: \nEmail: {email} "
                                                             f"\nPassword: {password} \nIs it ok to save?")
@@ -43,8 +51,8 @@ def save():
         elif "@" not in email:
             messagebox.showinfo(title="Oops", message="Please make sure you have entered a valid email")
         else:
-            with open("data.txt", "a") as data_file:
-                data_file.write(f"{website} | {email} | {password}\n")
+            with open("data.json", "w") as data_file:
+                json.dump(new_data, data_file, indent=4)
                 website_entry.delete(0, END)
                 password_entry.delete(0, END)
                 messagebox.showinfo(title="Success", message="Password saved")
