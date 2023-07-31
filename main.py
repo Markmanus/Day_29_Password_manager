@@ -13,6 +13,21 @@ numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
 
 
+def search():
+    website = website_entry.get()
+    try:
+        with open("data.json", "r") as data_file:
+            data = json.load(data_file)
+            print(data)
+    except FileNotFoundError:
+        messagebox.showinfo(title="Error", message="No Data File Found")
+    else:
+        if website in data:
+            email = data[website]["email"]
+            password = data[website]["password"]
+            messagebox.showinfo(title=website, message=f"Email: {email}\nPassword: {password}")
+        else:
+            messagebox.showinfo(title="Error", message=f"No details for {website} exists.")
 
 def generate_password():
     password_letters = [choice(letters) for letter in range(randint(8, 10))]
@@ -34,9 +49,6 @@ def save():
     website = website_entry.get()
     email = email_entry.get()
     password = password_entry.get()
-
-
-
 
 
     ############################# JSON better option, tested ##############################
@@ -95,8 +107,8 @@ password_label.grid(column=0, row=3, sticky="w")
 
 
 #entries
-website_entry = Entry(width=35, bg="white", highlightthickness=0, borderwidth=1, relief="solid")
-website_entry.grid(column=1, row=1, columnspan=2, sticky="EW")
+website_entry = Entry(width=30, bg="white", highlightthickness=0, borderwidth=1, relief="solid")
+website_entry.grid(column=1, row=1, columnspan=2, sticky="W")
 website_entry.focus()
 
 email_entry = Entry(width=35, bg="white",  borderwidth=1, relief="solid")
@@ -104,11 +116,14 @@ email_entry.grid(column=1, row=2, columnspan=2, sticky="EW")
 email_entry.insert(0, "insert email")
 
 
-password_entry = Entry(width=21 ,bg="white", borderwidth=1, relief="solid")
+password_entry = Entry(width=30 ,bg="white", borderwidth=1, relief="solid")
 
-password_entry.grid(column=1, row=3, sticky="EW")
+password_entry.grid(column=1, row=3, sticky="W")
 #buttons
-generate_password_button = Button(width=14 ,text="Generate Password", bg="white", command=generate_password)
+search_button = Button(width=15, text="Search", bg="white", command=search )
+search_button.grid(column=2, row=1, sticky="W")
+
+generate_password_button = Button(width=15 ,text="Generate Password", bg="white", command=generate_password)
 generate_password_button.grid(column=2, row=3, sticky="W")
 add_button = Button(width=36, text="Add", bg="white", command=save)
 add_button.grid(column=1, row=4, columnspan=2, sticky="W")
